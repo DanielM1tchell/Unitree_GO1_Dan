@@ -1,3 +1,9 @@
+//TITLE: Teleoperation code to operate the Unitree GO1
+//Instructions: Used WASD for forwards, reverse, left/right (on the spot) z and x are left/right whilst moving forward (curved)
+//AUTHOR 1: Daniel Mitchell University of Glasgow and California Institute of Technology
+
+//Citation for publication: TBC
+
 #include <ros/ros.h>
 #include <unitree_legged_msgs/HighCmd.h>
 #include <unitree_legged_msgs/HighState.h>
@@ -30,7 +36,7 @@ char getch()
         if (tcsetattr(0, TCSADRAIN, &old) < 0)
                 perror ("tcsetattr ~ICANON");
         return (buf);
- }
+}
 
 
 int main(int argc, char **argv)
@@ -78,8 +84,7 @@ int main(int argc, char **argv)
         high_cmd_ros.yawSpeed = 0.0f;			// Yaw rotation +ve = left, -ve = right
         high_cmd_ros.reserve = 0;       
      	
-     	char ch = 0;
-     	ch = getch();
+     	char ch = getch();
      	
     	printf("%ld\n", motiontime);
      	printf("%ld\n",count++);
@@ -90,56 +95,77 @@ int main(int argc, char **argv)
      	switch (ch)
      	{	
      	case 'q':
-     		
      		printf("already quit!\n");
      		return 0;
      		
-     		
      	case 'w':			//Walk forward
-     		high_cmd_ros.mode = 2;				
-     		high_cmd_ros.gaitType = 2;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
-        	high_cmd_ros.velocity[0] = 0.6f; 		// -1  ~ +1
+			
+     	        high_cmd_ros.mode = 2;		
+     		high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
+        	high_cmd_ros.velocity[0] = 0.8f; 		// -1  ~ +1
+		high_cmd_ros.bodyHeight = 0.0;
      		high_cmd_ros.yawSpeed = 0;			//rotate Theta left (2 is approx 180 degrees)
-          	printf("trotting forward\n");   		
+		high_cmd_ros.footRaiseHeight = 0;
+          	printf("forward_walk\n");   		
           	break;
      		
-     	case 'a':			//turning left
-     		
-            	high_cmd_ros.mode = 2;				
-            	high_cmd_ros.gaitType = 2;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
-            	high_cmd_ros.velocity[0] = 0.6f; 			// -1  ~ +1
-            	high_cmd_ros.yawSpeed = 0.5;			//Speed of rotation whilst walking (left) 0.5 = 45 degrees approx
-            	high_cmd_ros.footRaiseHeight = 0.1;
-            	printf("trotting left\n");
-            	break;
+    	case 'a':			//turning left on the spot
+                high_cmd_ros.mode = 2;				
+                high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
+                high_cmd_ros.velocity[0] = 0.0f; 			// -1  ~ +1
+		high_cmd_ros.bodyHeight = 0.0;
+                high_cmd_ros.yawSpeed = 0.8;			//Speed of rotation whilst walking (left) 0.5 = 45 degrees approx
+		high_cmd_ros.footRaiseHeight = 0;
+                printf("left_walk\n");
+                break;
         
-      	case 'd':			//turning right
-      		
-            	high_cmd_ros.mode = 2;				
-           	high_cmd_ros.gaitType = 2;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
-            	high_cmd_ros.velocity[0] = 0.6f; 			// -1  ~ +1
-             	high_cmd_ros.yawSpeed = -0.5;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
-      	 	high_cmd_ros.footRaiseHeight = 0.1;
-      	 	printf("trotting right\n");
-            	break;
+	case 'd':			//turning right on the spot
+                high_cmd_ros.mode = 2;				
+           	high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 	
+                high_cmd_ros.velocity[0] = 0.0f; 			// -1  ~ +1
+		high_cmd_ros.bodyHeight = 0.0;
+                high_cmd_ros.yawSpeed = -0.8;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
+		high_cmd_ros.footRaiseHeight = 0;
+      	 	printf("right_walk\n");
+                break;
         	
-        	
-       case 's':			// reverse
-       	
-           	high_cmd_ros.mode = 2;				
-            	high_cmd_ros.gaitType = 2;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
-            	high_cmd_ros.velocity[0] = -0.4f; 		// -1  ~ +1
-            	high_cmd_ros.yawSpeed = 0;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
-               printf("Reverse trotting\n");
-            	break;
+    	case 's':			// reverse
+                high_cmd_ros.mode = 2;				
+                high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 	
+                high_cmd_ros.velocity[0] = -0.4f; 		// -1  ~ +1}
+		high_cmd_ros.bodyHeight = 0.0;
+                high_cmd_ros.yawSpeed = 0;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
+		high_cmd_ros.footRaiseHeight = 0;
+                printf("Reverse_walk\n");
+                break;
+
+	case 'z':			//turning left  curve
+                high_cmd_ros.mode = 2;				
+                high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
+                high_cmd_ros.velocity[0] = 0.4f; 			// -1  ~ +1
+		high_cmd_ros.bodyHeight = 0.0;
+                high_cmd_ros.yawSpeed = 0.8;			//Speed of rotation whilst walking (left) 0.5 = 45 degrees approx
+		high_cmd_ros.footRaiseHeight = 0;
+                printf("left curve_walk\n");
+                break;
+        
+	case 'x':			//turning right curve
+                high_cmd_ros.mode = 2;				
+           	high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 	
+                high_cmd_ros.velocity[0] = 0.4f; 			// -1  ~ +1
+		high_cmd_ros.bodyHeight = 0.0;
+                high_cmd_ros.yawSpeed = -0.8;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
+		high_cmd_ros.footRaiseHeight = 0;
+      	 	printf("right curve_walk\n");
+                break;
       
-      case 'e':
+    	case 'e':
       		high_cmd_ros.mode = 1; //Force Stand			
-               printf("Force Stand\n");
+                printf("Force Stand- walk mode\n");
       		break;
             	
-       default:
-       	printf("Stop!\n");	
+        default:	
+       	        printf("Stop!\n");	
        }
        
        pub.publish(high_cmd_ros);
