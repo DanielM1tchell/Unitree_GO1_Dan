@@ -17,7 +17,7 @@ Unitree_legged_sdk
 
 **A- Basic Teleoperation**
 Terminal Window 1
-`roslaunch unitree_legged_real real.launch ctrl_level:=highlevel`
+:-`roslaunch unitree_legged_real real.launch ctrl_level:=highlevel`
 
 Terimnal Window 2
-`rosrun unitree_legged_real dan_teleop_basic`
+:-`rosrun unitree_legged_real dan_teleop_basic`
