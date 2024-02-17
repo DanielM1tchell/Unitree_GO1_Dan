@@ -10,8 +10,9 @@ dan_teleop_advanced.cpp //Working progress
 
 
 **Dependencies**
-Unitree_ros
-Unitree_legged_sdk 
+Unitree_ros - See Unitree Github
+Unitree_legged_sdk - See Unitree Github
+Real-time-ROS-EEG-decoding-test-using-turtlesim (See DanielM1tchell Github)
 
 **How to run code**
 
