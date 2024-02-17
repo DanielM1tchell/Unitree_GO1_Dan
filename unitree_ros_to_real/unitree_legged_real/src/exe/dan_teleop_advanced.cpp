@@ -301,7 +301,6 @@ int main(int argc, char **argv)
     
 
     unitree_legged_msgs::HighCmd high_cmd_ros;
-
     ros::Publisher pub = nh.advertise<unitree_legged_msgs::HighCmd>("high_cmd", 1000);
     
 	char ch = 'e';

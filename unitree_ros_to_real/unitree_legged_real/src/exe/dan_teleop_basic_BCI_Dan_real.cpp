@@ -1,10 +1,3 @@
-//TITLE: Teleoperation code to operate the Unitree GO1
-//Instructions: Used WASD for forwards, reverse, left/right (on the spot) z and x are left/right whilst moving forward (curved)
-//Instructions 2: Now features 2 dance modes activated via command n
-//AUTHOR 1: Daniel Mitchell University of Glasgow and California Institute of Technology
-
-//Citation for publication: TBC
-
 #include <ros/ros.h>
 #include <unitree_legged_msgs/HighCmd.h>
 #include <unitree_legged_msgs/HighState.h>
@@ -12,11 +5,15 @@
 #include "convert.h"
 #include <termios.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/String.h>    //New Line Dan
+#include <string>
 #include <iostream>
 #include <thread>
 #include <chrono>
 
 using namespace UNITREE_LEGGED_SDK;
+char teleop_cmd_unitree = 'B';
+
 
 char getch() 
 {
@@ -39,6 +36,19 @@ char getch()
         return (buf);
 }
 
+void charCallback(const std_msgs::String::ConstPtr& msg){                        //Entire new segment
+        //Callback function to handle messages recieved on the turtle1?cmd_vel
+        ROS_INFO("Recieved value_to_char message:%s", msg->data.c_str());
+        std::string myString = "B";
+        myString = msg->data.c_str();
+
+        teleop_cmd_unitree = myString.at(0);
+        printf("%c/n", teleop_cmd_unitree);
+        
+
+}
+
+
 
 int main(int argc, char **argv)
 {
@@ -59,6 +69,7 @@ int main(int argc, char **argv)
     
 
     unitree_legged_msgs::HighCmd high_cmd_ros;
+    ros::Subscriber sub = nh.subscribe("teleop_cmd_unitree",10,charCallback);   //new line
 
     ros::Publisher pub = nh.advertise<unitree_legged_msgs::HighCmd>("high_cmd", 1000);
      	
@@ -85,23 +96,19 @@ int main(int argc, char **argv)
         high_cmd_ros.yawSpeed = 0.0f;			// Yaw rotation +ve = left, -ve = right
         high_cmd_ros.reserve = 0;       
      	
-     	char ch = getch();
+     	// char ch = getch();
+        
      	
     	printf("%ld\n", motiontime);
      	printf("%ld\n",count++);
-     	printf("ch = %d\n\n", ch);     
+     	     
      	
      	 	       
      	       
-     	switch (ch)
+     	switch (teleop_cmd_unitree)
      	{	
-     	case 'q':
-     		printf("already quit!\n");
-     		return 0;
-     		
-     	case 'w':			//Walk forward
-			
-     	        high_cmd_ros.mode = 2;		
+     	case 'F':			//Walk forward
+     		high_cmd_ros.mode = 2;		
      		high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
         	high_cmd_ros.velocity[0] = 0.2f; 		// -1  ~ +1
 		high_cmd_ros.bodyHeight = 0.0;
@@ -110,8 +117,8 @@ int main(int argc, char **argv)
           	printf("forward_walk\n");   		
           	break;
      		
-    	case 'a':			//turning left on the spot
-                high_cmd_ros.mode = 2;				
+     	case 'L':			//turning left
+            	high_cmd_ros.mode = 2;				
                 high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
                 high_cmd_ros.velocity[0] = 0.0f; 			// -1  ~ +1
 		high_cmd_ros.bodyHeight = 0.0;
@@ -120,8 +127,9 @@ int main(int argc, char **argv)
                 printf("left_walk\n");
                 break;
         
-	case 'd':			//turning right on the spot
-                high_cmd_ros.mode = 2;				
+        
+      	case 'R':			//turning right
+            	high_cmd_ros.mode = 2;				
            	high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 	
                 high_cmd_ros.velocity[0] = 0.0f; 			// -1  ~ +1
 		high_cmd_ros.bodyHeight = 0.0;
@@ -129,46 +137,32 @@ int main(int argc, char **argv)
 		high_cmd_ros.footRaiseHeight = 0;
       	 	printf("right_walk\n");
                 break;
-        	
-    	case 's':			// reverse
-                high_cmd_ros.mode = 2;				
-                high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 	
-                high_cmd_ros.velocity[0] = -0.4f; 		// -1  ~ +1}
-		high_cmd_ros.bodyHeight = 0.0;
-                high_cmd_ros.yawSpeed = 0;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
-		high_cmd_ros.footRaiseHeight = 0;
-                printf("Reverse_walk\n");
-                break;
-
-	case 'z':			//turning left  curve
-                high_cmd_ros.mode = 2;				
-                high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
-                high_cmd_ros.velocity[0] = 0.4f; 			// -1  ~ +1
-		high_cmd_ros.bodyHeight = 0.0;
-                high_cmd_ros.yawSpeed = 0.8;			//Speed of rotation whilst walking (left) 0.5 = 45 degrees approx
-		high_cmd_ros.footRaiseHeight = 0;
-                printf("left curve_walk\n");
-                break;
         
-	case 'x':			//turning right curve
-                high_cmd_ros.mode = 2;				
-           	high_cmd_ros.gaitType = 1;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 	
-                high_cmd_ros.velocity[0] = 0.4f; 			// -1  ~ +1
-		high_cmd_ros.bodyHeight = 0.0;
-                high_cmd_ros.yawSpeed = -0.8;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
-		high_cmd_ros.footRaiseHeight = 0;
-      	 	printf("right curve_walk\n");
-                break;
-
-      
-    	case 'e':
+        case 'B':
+      		high_cmd_ros.mode = 1; //Force Stand			
+                printf("Force Stand\n");
+      		break;	
+        
+        case 'S':
       		high_cmd_ros.mode = 1; //Force Stand			
                 printf("Force Stand- walk mode\n");
       		break;
+        	
+/*        case 's':			// reverse
+           	high_cmd_ros.mode = 2;				
+            	high_cmd_ros.gaitType = 2;			//walk at specified velocity (0= idle, 1=trot, 2=trot running, 3=climb stair, 4=trot obstacle) 
+            	high_cmd_ros.velocity[0] = -0.4f; 		// -1  ~ +1
+            	high_cmd_ros.yawSpeed = 0;			//Speed of rotation whilst walking (right) -0.5 = 45 degrees approx
+               printf("Reverse trotting\n");
+            	break;
+
+        case 'q':
+     		printf("already quit!\n");
+     		return 0;
             	
-        default:	
-       	        printf("Stop!\n");	
-       }
+       default:
+       	printf("Stop!\n");	
+ */      }
        
        pub.publish(high_cmd_ros);
        
