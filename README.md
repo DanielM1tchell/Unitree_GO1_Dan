@@ -16,8 +16,8 @@ Unitree_legged_sdk
 **How to run code**
 
 **A- Basic Teleoperation**
-Terminal Window 1
-:-`roslaunch unitree_legged_real real.launch ctrl_level:=highlevel`
+Terminal Window 1<br>
+`roslaunch unitree_legged_real real.launch ctrl_level:=highlevel`
 
-Terimnal Window 2
-:-`rosrun unitree_legged_real dan_teleop_basic`
+Terimnal Window 2<br>
+`rosrun unitree_legged_real dan_teleop_basic`
