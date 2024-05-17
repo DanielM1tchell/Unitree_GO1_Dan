@@ -14,9 +14,25 @@ Unitree_ros - See Unitree Github
 Unitree_legged_sdk - See Unitree Github
 Real-time-ROS-EEG-decoding-test-using-turtlesim (See DanielM1tchell Github)
 
-I also started to use the RealSense Camera too so I have included dependencies for that too. 
+I also started to use the RealSense Camera too so I have included dependencies for that too. Its alot of github packages...
+
+
 elevation_mapping- https://github.com/ANYbotics/elevation_mapping
-geometry2- 
+geometry2- https://github.com/ros/geometry2
+grid_map - https://github.com/ANYbotics/grid_map.git
+kindr - https://github.com/ANYbotics/kindr.git
+kindr_ros - https://github.com/ANYbotics/kindr_ros.git
+lcm - https://github.com/lcm-proj/lcm.git
+librealsense - https://github.com/IntelRealSense/librealsense.git
+message_logger - https://github.com/ANYbotics/message_logger.git
+navigation - https://github.com/ros-planning/navigation.git
+octomap - https://github.com/OctoMap/octomap.git
+pcl - https://github.com/PointCloudLibrary/pcl.git // THIS IS A TOUGH ONE TO DOWNLOAD 
+realsense_ros - https://github.com/IntelRealSense/realsense-ros.git
+http://wiki.ros.org/teleop_twist_keyboard // Unused in the end but good to have
+turtlebot3 - https://github.com/ROBOTIS-GIT/turtlebot3.git //Needed when testing simulation first for elevation mapping
+
+
 
 **How to run code**
 
