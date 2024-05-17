@@ -1,18 +1,22 @@
 # Unitree_GO1_Dan
 An overview of my Unitree GO1 WS 
 
-Note that this workspace is a work in progress and features several changes to the standard unitree githb packages to ensure that the code actually works.
+Note that this workspace is a workspace which is derived from the original unitree github which did not work so has been edited.
+
 I have made edits to the unitree_ros_to_real package which unitree provide. Key files include:
 unitree_legged_real->src->exe:
-dan_teleop_basic.cpp //Finished
-dan_teleop_advanced.cpp //Working progress
-
+dan_teleop_basic.cpp //FINISHED
+dan_teleop_advanced.cpp //FINISHED
 
 
 **Dependencies**
 Unitree_ros - See Unitree Github
 Unitree_legged_sdk - See Unitree Github
 Real-time-ROS-EEG-decoding-test-using-turtlesim (See DanielM1tchell Github)
+
+I also started to use the RealSense Camera too so I have included dependencies for that too. 
+elevation_mapping- https://github.com/ANYbotics/elevation_mapping
+geometry2- 
 
 **How to run code**
 
