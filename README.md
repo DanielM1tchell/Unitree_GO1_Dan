@@ -1,5 +1,11 @@
 # Unitree_GO1_Dan
-An overview of my Unitree GO1 WS 
+An overview of my Unitree GO1 Workspace
+
+If you found this code useful please cite this publication:
+
+Y. An, D. Mitchell, J. Lathrop, D. Flynn and S. -J. Chung, "Motor Imagery Teleoperation of a Mobile Robot Using a Low-Cost Brain-Computer Interface for Multi-Day Validation," 2024 IEEE Conference on Telepresence, Pasadena, CA, USA, 2024, pp. 103-110, doi: 10.1109/Telepresence63209.2024.10841769.
+
+
 
 Note that this workspace is a workspace which is derived from the original unitree github which did not work so has been edited.
 
