@@ -90,7 +90,7 @@ Terminal Window 3<br>
 cd to the EEG folder- Still to replace this as I need to upload the file together
 `python 3 EEG file`
 
-**F- IN PROGRESS- BCI Teleoperation of Unitree GO1 using LIVE Data and advanced controller which features motion planning**<br>
+**F- BCI Teleoperation of Unitree GO1 using LIVE Data and advanced controller which features motion planning**<br>
 Robot will move via real BCI data and use motion planning to change modes which use 1 for walk, 2 for crawl and 3 for stair mode
 Terminal Window 1<br>
 `roslaunch unitree_legged_real real.launch ctrl_level:=highlevel`
